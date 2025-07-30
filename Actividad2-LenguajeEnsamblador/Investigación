@@ -1,8 +1,49 @@
 
 Actividad 1
+- ¿Qué es la entrada-salida mapeada a memoria?
+R//:La entrada-salida mapeada a memoria es una técnica en la que los dispositivos de entrada y salida (como el teclado o la pantalla) se representan como áreas específicas dentro del espacio de direcciones de la memoria del sistema. Esto permite que el procesador interactúe con estos dispositivos utilizando instrucciones estándar de lectura y escritura de memoria, sin necesidad de instrucciones especiales o controladores dedicados.
+
+- ¿Cómo se implementa en la plataforma Hack?
+R//:
+
+- Inventa un programa que haga uso de la entrada-salida mapeada a memoria.
+R//: // Dirección de la pantalla
+@16384
+D=A
+@SCREEN
+M=D
+
+// Dirección del teclado
+@24576
+D=A
+@KBD
+M=D
+
+// Bucle principal
+(LOOP)
+// Leer el valor del teclado
+@KBD
+D=M
+@KEY_PRESSED
+D;JEQ  // Si no se presiona ninguna tecla, saltar al final
+
+// Mostrar el carácter 'A' (código ASCII 65) en la pantalla
+@65
+D=A
+@SCREEN
+A=M
+M=D
+
+// Incrementar la dirección de la pantalla
+@SCREEN
+M=M+1
+
+(KEY_PRESSED)
+@LOOP
+0;JMP
 
 Actividad 2-4
-@SCREEN 
+R//: @SCREEN 
 @31
 AD=D+A
 @6192
@@ -142,3 +183,4 @@ A=M
 M=D
 @LOOP
 0;JMP
+
