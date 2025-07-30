@@ -184,3 +184,5 @@ M=D
 @LOOP
 0;JMP
 
+*Comentario*
+profe hola, al parecer tengo el codigo bien pero tengo un pequeñisimo problema, no dibuja xdd, al ejecutar el programa si detecta las teclas pero no se genera ninguna accion y no se dibuja.
