@@ -1,5 +1,6 @@
 ## Sesion 1 ##
 # Intorduccion a los objetos #
+
 - ¿Qué representa la clase Particle?
 R//: La clase Particle representa un concepto o entidad que modela una partícula en un programa en términos de programación orientada a objetos (POO), una clase es una plantilla o molde que define atributos y métodos 
 que una instancia de esa clase tendrá.
@@ -60,3 +61,4 @@ int main() {
 
     return 0;
 }
+
