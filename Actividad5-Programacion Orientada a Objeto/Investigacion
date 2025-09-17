@@ -1,1 +1,62 @@
+## Sesion 1 ##
+# Intorduccion a los objetos #
+- ¿Qué representa la clase Particle?
+R//: La clase Particle representa un concepto o entidad que modela una partícula en un programa en términos de programación orientada a objetos (POO), una clase es una plantilla o molde que define atributos y métodos 
+que una instancia de esa clase tendrá.
 
+- ¿Cómo interactúan sus atributos y métodos?
+R//: Atributos: Son las variables que guardan el estado o las características de cada objeto de la clase. En Particle, por ejemplo, x y y podrían ser atributos que guardan la posición de la partícula en el plano.
+
+Métodos: Son funciones definidas dentro de la clase que describen acciones que un objeto puede realizar o comportamientos asociados. Por ejemplo, el método move podría modificar los valores de x y y para cambiar la posición de la partícula.
+
+- Prompt para ChatGPT: explícame en detalle qué es un objeto en C++ y cómo se relaciona con una clase. Usa el ejemplo de una clase Particle con atributos `x` y `y` y un método `move`.
+R//: Clase Particle
+Es una plantilla que define una partícula con atributos x y y (posición en 2D) y un método move para cambiar esa posición.
+
+Objeto
+Es una instancia concreta de la clase. Por ejemplo, un objeto p de tipo Particle tiene sus propios valores de x y y, y puede usar el método move para actualizar su posición.
+
+Interacción
+Los métodos como move manipulan los atributos para cambiar el estado del objeto.
+
+ejemplo: 
+#include <iostream>
+
+// Definición de la clase Particle
+class Particle {
+public:
+    // Atributos: posición en el plano 2D
+    float x;
+    float y;
+
+    // Método para mover la partícula
+    void move(float dx, float dy) {
+        x += dx;  // Incrementa la posición x
+        y += dy;  // Incrementa la posición y
+    }
+
+    // Método para mostrar la posición actual
+    void printPosition() {
+        std::cout << "Particle position: (" << x << ", " << y << ")" << std::endl;
+    }
+};
+
+int main() {
+    // Crear un objeto de tipo Particle
+    Particle p;
+
+    // Inicializar atributos
+    p.x = 0.0f;
+    p.y = 0.0f;
+
+    // Mostrar posición inicial
+    p.printPosition();  // Output: Particle position: (0, 0)
+
+    // Mover la partícula
+    p.move(3.5f, 2.0f);
+
+    // Mostrar nueva posición
+    p.printPosition();  // Output: Particle position: (3.5, 2)
+
+    return 0;
+}
