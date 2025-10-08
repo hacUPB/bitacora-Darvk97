@@ -1,1 +1,306 @@
+### OfApp.h ###
+#pragma once
 
+#include "ofMain.h"
+
+// ==== Observer ====
+class IObserver {
+public:
+	virtual void onMouseEvent(ofVec2f pos) = 0;
+	virtual ~IObserver() = default;
+};
+
+class Subject {
+public:
+	void addObserver(IObserver * obs) {
+		observers.push_back(obs);
+	}
+
+	void notify(ofVec2f pos) {
+		for (auto & obs : observers) {
+			obs->onMouseEvent(pos);
+		}
+	}
+
+private:
+	std::vector<IObserver *> observers;
+};
+
+// ==== State Pattern ====
+class Shape;
+
+class State {
+public:
+	virtual void update(Shape * shape) = 0;
+	virtual void handleInput(Shape * shape, ofVec2f input) = 0;
+	virtual ~State() = default;
+};
+
+// ==== Shape ====
+class Shape : public IObserver {
+public:
+	Shape();
+	virtual ~Shape();
+
+	virtual void draw() = 0;
+	virtual void update();
+
+	void setPosition(const ofVec2f & pos);
+	ofVec2f getPosition() const;
+	void changeState(State * newState);
+	void setColor(const ofColor & color);
+	ofColor getColor() const;
+
+	virtual void onMouseEvent(ofVec2f pos) override;
+
+protected:
+	ofVec2f position;
+	ofColor color;
+	State * currentState;
+};
+
+// ==== Concrete States ====
+class StaticState : public State {
+public:
+	void update(Shape * shape) override;
+	void handleInput(Shape * shape, ofVec2f input) override;
+};
+
+class MovingState : public State {
+public:
+	void update(Shape * shape) override;
+	void handleInput(Shape * shape, ofVec2f input) override;
+};
+
+// ==== Concrete Shapes ====
+enum ShapeKind { CIRCLE,
+	SQUARE,
+	TRIANGLE };
+
+class CircleShape : public Shape {
+public:
+	CircleShape();
+	void draw() override;
+};
+
+class SquareShape : public Shape {
+public:
+	SquareShape();
+	void draw() override;
+};
+
+class TriangleShape : public Shape {
+public:
+	TriangleShape();
+	void draw() override;
+};
+
+// ==== Factory ====
+class ShapeFactory {
+public:
+	static Shape * createShape(ShapeKind type);
+};
+
+// ==== ofApp ====
+class ofApp : public ofBaseApp {
+public:
+	void setup();
+	void update();
+	void draw();
+	void mousePressed(int x, int y, int button);
+	void keyPressed(int key);
+
+private:
+	std::vector<Shape *> shapes;
+	Subject mouseSubject;
+};
+
+
+### OfApp.cpp ###
+#include "ofApp.h"
+
+// ==== SHAPE BASE ====
+Shape::Shape() {
+	currentState = nullptr;
+	color = ofColor::white;
+}
+
+Shape::~Shape() {
+	if (currentState) delete currentState;
+}
+
+void Shape::setPosition(const ofVec2f & pos) {
+	position = pos;
+}
+
+ofVec2f Shape::getPosition() const {
+	return position;
+}
+
+void Shape::changeState(State * newState) {
+	if (currentState) delete currentState;
+	currentState = newState;
+}
+
+void Shape::setColor(const ofColor & c) {
+	color = c;
+}
+
+ofColor Shape::getColor() const {
+	return color;
+}
+
+void Shape::onMouseEvent(ofVec2f pos) {
+	if (currentState) {
+		currentState->handleInput(this, pos);
+	}
+}
+
+void Shape::update() {
+	if (currentState) {
+		currentState->update(this);
+	}
+}
+
+// ==== STATES ====
+void StaticState::update(Shape * shape) {
+	// no movimiento
+}
+
+void StaticState::handleInput(Shape * shape, ofVec2f input) {
+	shape->changeState(new MovingState());
+}
+
+void MovingState::update(Shape * shape) {
+	ofVec2f pos = shape->getPosition();
+	pos.x += ofRandom(-2, 2);
+	pos.y += ofRandom(-2, 2);
+	shape->setPosition(pos);
+}
+
+void MovingState::handleInput(Shape * shape, ofVec2f input) {
+	// no cambio de estado aquí
+}
+
+// ==== SHAPE IMPLEMENTATIONS ====
+CircleShape::CircleShape() {
+	currentState = new StaticState();
+}
+
+void CircleShape::draw() {
+	ofSetColor(color);
+	ofDrawCircle(position, 20);
+}
+
+SquareShape::SquareShape() {
+	currentState = new StaticState();
+}
+
+void SquareShape::draw() {
+	ofSetColor(color);
+	ofDrawRectangle(position.x - 15, position.y - 15, 30, 30);
+}
+
+TriangleShape::TriangleShape() {
+	currentState = new StaticState();
+}
+
+void TriangleShape::draw() {
+	ofSetColor(color);
+	ofDrawTriangle(position + ofVec2f(0, -20),
+		position + ofVec2f(-17, 10),
+		position + ofVec2f(17, 10));
+}
+
+// ==== FACTORY ====
+Shape * ShapeFactory::createShape(ShapeKind type) {
+	switch (type) {
+	case CIRCLE:
+		return new CircleShape();
+	case SQUARE:
+		return new SquareShape();
+	case TRIANGLE:
+		return new TriangleShape();
+	default:
+		return nullptr;
+	}
+}
+
+// ==== OFAPP ====
+void ofApp::setup() {
+	ofSetFrameRate(60);
+	ofBackground(0);
+
+	// Crear figuras iniciales
+	for (int i = 0; i < 5; i++) {
+		Shape * shape = ShapeFactory::createShape(static_cast<ShapeKind>(i % 3));
+		shape->setPosition({ ofRandomWidth(), ofRandomHeight() });
+		shape->setColor(ofColor::fromHsb(ofRandom(255), 200, 255));
+		shapes.push_back(shape);
+		mouseSubject.addObserver(shape);
+	}
+}
+
+void ofApp::update() {
+	for (auto & shape : shapes) {
+		shape->update();
+	}
+}
+
+void ofApp::draw() {
+	for (auto & shape : shapes) {
+		shape->draw();
+	}
+}
+
+void ofApp::mousePressed(int x, int y, int button) {
+	ofVec2f mousePos(x, y);
+	mouseSubject.notify(mousePos);
+}
+
+void ofApp::keyPressed(int key) {
+	if (key == 'c') {
+		Shape * shape = ShapeFactory::createShape(CIRCLE);
+		shape->setPosition({ ofRandomWidth(), ofRandomHeight() });
+		shape->setColor(ofColor::fromHsb(ofRandom(255), 200, 255));
+		shapes.push_back(shape);
+		mouseSubject.addObserver(shape);
+	} else if (key == 's') {
+		Shape * shape = ShapeFactory::createShape(SQUARE);
+		shape->setPosition({ ofRandomWidth(), ofRandomHeight() });
+		shape->setColor(ofColor::fromHsb(ofRandom(255), 200, 255));
+		shapes.push_back(shape);
+		mouseSubject.addObserver(shape);
+	} else if (key == 't') {
+		Shape * shape = ShapeFactory::createShape(TRIANGLE);
+		shape->setPosition({ ofRandomWidth(), ofRandomHeight() });
+		shape->setColor(ofColor::fromHsb(ofRandom(255), 200, 255));
+		shapes.push_back(shape);
+		mouseSubject.addObserver(shape);
+	} else if (key == '1') {
+		// Cambiar color de todas las formas
+		for (auto & shape : shapes) {
+			shape->setColor(ofColor::fromHsb(ofRandom(255), 200, 255));
+		}
+	} else if (key == '2') {
+		// Randomizar posiciones
+		for (auto & shape : shapes) {
+			shape->setPosition({ ofRandomWidth(), ofRandomHeight() });
+		}
+	} else if (key == '3') {
+		// Cambiar tipo de forma
+		for (size_t i = 0; i < shapes.size(); ++i) {
+			ShapeKind nextType = static_cast<ShapeKind>((i + 1) % 3);
+			ofVec2f pos = shapes[i]->getPosition();
+			ofColor col = shapes[i]->getColor();
+
+			delete shapes[i]; // eliminar figura anterior
+
+			Shape * newShape = ShapeFactory::createShape(nextType);
+			newShape->setPosition(pos);
+			newShape->setColor(col);
+			shapes[i] = newShape;
+			mouseSubject.addObserver(newShape);
+		}
+	}
+}
