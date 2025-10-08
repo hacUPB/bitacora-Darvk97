@@ -24,6 +24,21 @@ public:
 
 private:
 	std::vector<IObserver *> observers;
+
+	class NotifyOnceState : public State {
+	public:
+		void update(Shape * shape) override;
+		void handleInput(Shape * shape, ofVec2f input) override;
+
+	private:
+		bool notified = false;
+	};
+
+	class NotifyAlwaysState : public State {
+	public:
+		void update(Shape * shape) override;
+		void handleInput(Shape * shape, ofVec2f input) override;
+	};
 };
 
 // ==== State Pattern ====
@@ -58,6 +73,23 @@ protected:
 	ofColor color;
 	State * currentState;
 };
+
+// ==== Notify States ====
+class NotifyOnceState : public State {
+public:
+	void update(Shape * shape) override;
+	void handleInput(Shape * shape, ofVec2f input) override;
+
+private:
+	bool notified = false;
+};
+
+class NotifyAlwaysState : public State {
+public:
+	void update(Shape * shape) override;
+	void handleInput(Shape * shape, ofVec2f input) override;
+};
+
 
 // ==== Concrete States ====
 class StaticState : public State {
@@ -114,7 +146,6 @@ private:
 	std::vector<Shape *> shapes;
 	Subject mouseSubject;
 };
-
 
 ### OfApp.cpp ###
 #include "ofApp.h"
@@ -281,11 +312,13 @@ void ofApp::keyPressed(int key) {
 		// Cambiar color de todas las formas
 		for (auto & shape : shapes) {
 			shape->setColor(ofColor::fromHsb(ofRandom(255), 200, 255));
+			shape->changeState(new NotifyOnceState());
 		}
 	} else if (key == '2') {
 		// Randomizar posiciones
 		for (auto & shape : shapes) {
 			shape->setPosition({ ofRandomWidth(), ofRandomHeight() });
+			shape->changeState(new NotifyAlwaysState());
 		}
 	} else if (key == '3') {
 		// Cambiar tipo de forma
