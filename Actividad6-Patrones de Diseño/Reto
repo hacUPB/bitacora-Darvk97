@@ -1,3 +1,5 @@
+Link video:
+
 ### OfApp.h ###
 #pragma once
 
@@ -281,6 +283,12 @@ void ofApp::update() {
 void ofApp::draw() {
 	for (auto & shape : shapes) {
 		shape->draw();
+
+		ofSetColor(255);
+		ofDrawBitmapStringHighlight("1: Cambiar color | 2: Randomizar | Click izq: spawnear de forma random las formas" , 20, 20);
+		ofDrawBitmapStringHighlight("C: circulo | T: Triangulo | S: Cuadrado ", 20, 40);
+		ofDrawBitmapStringHighlight("Estado Actual: " + currentState->getName(), 20, 60);
+		ofDrawBitmapStringHighlight("Las figuras Tiemblan?: " + std::string(shaking? "si" : "no"), 20, 80);
 	}
 }
 
