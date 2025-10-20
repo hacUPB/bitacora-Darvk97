@@ -1,0 +1,219 @@
+### OfApp.h ###
+
+#pragma once
+#include "ofMain.h"
+#include <memory>
+#include <vector>
+
+// ------------------------------------------------------------
+// Clase base Behavior (Polimorfismo)
+// ------------------------------------------------------------
+class Particle; // forward declaration
+
+struct Behavior {
+	virtual ~Behavior() = default;
+	virtual void apply(Particle & p, float dt) = 0;
+};
+
+// ------------------------------------------------------------
+// Clase Particle
+// ------------------------------------------------------------
+class Particle {
+public:
+	Particle() = default;
+	Particle(const ofVec2f & pos, const ofVec2f & vel, float life, std::shared_ptr<Behavior> behavior) {
+		reset(pos, vel, life, behavior);
+	}
+
+	void reset(const ofVec2f & pos, const ofVec2f & vel, float life, std::shared_ptr<Behavior> behavior) {
+		this->pos = pos;
+		this->vel = vel;
+		this->life = life;
+		this->behavior = std::move(behavior);
+		this->radius = ofRandom(1.5f, 4.5f);
+		this->color = ofColor::fromHsb(ofRandom(0, 255), 200, 255);
+	}
+
+	void update(float dt) {
+		if (behavior) behavior->apply(*this, dt);
+		pos += vel * dt;
+		life -= dt;
+		vel *= 0.99f;
+	}
+
+	void draw() const {
+		ofSetColor(color, ofMap(life, 0, 3.0f, 0, 255, true));
+		ofDrawCircle(pos, radius);
+	}
+
+	bool isDead() const { return life <= 0.0f; }
+
+	// Encapsulación: getters/setters
+	ofVec2f getPosition() const { return pos; }
+	ofVec2f getVelocity() const { return vel; }
+	void setVelocity(const ofVec2f & v) { vel = v; }
+
+private:
+	ofVec2f pos { 0, 0 };
+	ofVec2f vel { 0, 0 };
+	float life { 0.0f };
+	float radius { 2.5f };
+	ofColor color { 255 };
+	std::shared_ptr<Behavior> behavior;
+};
+
+// ------------------------------------------------------------
+// Comportamientos concretos (Herencia)
+// ------------------------------------------------------------
+struct WanderBehavior : public Behavior {
+	void apply(Particle & p, float dt) override {
+		ofVec2f v = p.getVelocity();
+		float angle = ofRandomf() * 15.0f; // ruido angular
+		v.rotate(angle * dt * 60.0f);
+		p.setVelocity(v);
+	}
+};
+
+struct SeekBehavior : public Behavior {
+	ofVec2f target;
+	SeekBehavior(const ofVec2f & t)
+		: target(t) { }
+	void apply(Particle & p, float dt) override {
+		ofVec2f dir = (target - p.getPosition()).getNormalized();
+		p.setVelocity(p.getVelocity() + dir * 50.0f * dt);
+	}
+};
+
+// ------------------------------------------------------------
+// Sistema de partículas
+// ------------------------------------------------------------
+class ParticleSystem {
+public:
+	ParticleSystem(size_t reserve = 1000) {
+		particles.reserve(reserve);
+	}
+
+	void emit(const ofVec2f & pos, int count, std::shared_ptr<Behavior> behavior) {
+		for (int i = 0; i < count; ++i) {
+			if (particles.size() < maxParticles) {
+				ofVec2f vel(ofRandom(-50, 50), ofRandom(-50, 50));
+				particles.emplace_back(pos, vel, ofRandom(1.0f, 4.0f), behavior);
+			} else {
+				// Reutiliza partículas muertas (optimización)
+				for (auto & p : particles) {
+					if (p.isDead()) {
+						p.reset(pos, ofVec2f(ofRandom(-40, 40), ofRandom(-40, 40)), ofRandom(1.0f, 4.0f), behavior);
+						break;
+					}
+				}
+			}
+		}
+	}
+
+	void update(float dt) {
+		for (auto & p : particles) {
+			if (!p.isDead()) p.update(dt);
+		}
+	}
+
+	void draw() const {
+		for (const auto & p : particles) {
+			if (!p.isDead()) p.draw();
+		}
+	}
+
+private:
+	std::vector<Particle> particles;
+	size_t maxParticles = 2000;
+};
+
+// ------------------------------------------------------------
+// Clase principal OFAPP
+// ------------------------------------------------------------
+class ofApp : public ofBaseApp {
+public:
+	void setup() override;
+	void update() override;
+	void draw() override;
+	void mousePressed(int x, int y, int button) override;
+
+private:
+	ParticleSystem system;
+	std::shared_ptr<Behavior> wander;
+	std::shared_ptr<Behavior> seek;
+
+	float lastTime;
+	float fpsDisplayTimer = 0.0f;
+	float currentFPS = 0.0f;
+};
+
+
+
+### OfApp.cpp ###
+
+#include "ofApp.h"
+
+//--------------------------------------------------------------
+void ofApp::setup() {
+	ofSetBackgroundAuto(true);
+	ofBackground(10, 10, 30);
+	ofSetFrameRate(60);
+
+	system = ParticleSystem(2000);
+
+	wander = std::make_shared<WanderBehavior>();
+	seek = std::make_shared<SeekBehavior>(ofVec2f(ofGetWidth() / 2, ofGetHeight() / 2));
+
+	lastTime = ofGetElapsedTimef();
+}
+
+//--------------------------------------------------------------
+void ofApp::update() {
+	float now = ofGetElapsedTimef();
+	float dt = ofClamp(now - lastTime, 0.0f, 1.0f / 30.0f);
+	lastTime = now;
+
+	// Emite partículas desde el mouse
+	system.emit(ofVec2f(ofGetMouseX(), ofGetMouseY()), 10, wander);
+	system.update(dt);
+
+	fpsDisplayTimer += dt;
+	if (fpsDisplayTimer > 0.5f) {
+		currentFPS = ofGetFrameRate();
+		fpsDisplayTimer = 0.0f;
+	}
+}
+
+//--------------------------------------------------------------
+void ofApp::draw() {
+	system.draw();
+
+	ofSetColor(255);
+	ofDrawBitmapStringHighlight("FPS: " + ofToString(currentFPS, 1), 10, 20);
+	ofDrawBitmapStringHighlight("Click para emitir partículas SEEK", 10, 40);
+}
+
+//--------------------------------------------------------------
+void ofApp::mousePressed(int x, int y, int button) {
+	// Emitir partículas con comportamiento Seek hacia el centro
+	system.emit(ofVec2f(x, y), 200, std::make_shared<SeekBehavior>(ofVec2f(ofGetWidth() / 2, ofGetHeight() / 2)));
+}
+
+### Reflexion final ###
+
+- Realizar pruebas finales y ajustes.
+R//: se hicieron cambios al seguimiento de las particulas ya que al hacer click no iban al centro sino que iban en una direccion al azar
+
+- Asegurar que el código sigue buenas prácticas de OOP.
+R//: cumple con todo lo de herencia, polimorfismo y todo lo relacionado con OOP
+
+- ¿Cómo influyó el entendimiento de los mecanismos internos de OOP en el proyecto?
+R//: influyo en comprender los mecanismos internos de la programación orientada a objetos me permitió estructurar el código de manera clara y modular. Gracias a esto, pude crear diferentes comportamientos de partículas usando herencia y polimorfismo sin repetir lógica, entendiendo además cómo las decisiones en memoria y métodos virtuales afectan el rendimiento.
+
+- ¿Qué desafíos enfrentaste y cómo los superaste?
+R//: Uno de los mayores desafíos fue mantener una buena velocidad cuando había muchas partículas activas. Al principio, el programa se hacía lento por las continuas creaciones de objetos, pero logré solucionarlo reutilizando las partículas muertas y optimizando el uso de punteros. También ajusté los comportamientos hasta que el movimiento se sintió más natural.
+
+- ¿Qué aprendiste sobre el equilibrio entre diseño y eficiencia?
+R//: aprendí que el equilibrio entre diseño y eficiencia es fundamental. Un código bien organizado facilita la comprensión y la extensión, pero también es importante optimizar las partes críticas para no sacrificar rendimiento.
+
+Link Video: https://youtu.be/Af67NHhbix0
