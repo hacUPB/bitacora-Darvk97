@@ -55,15 +55,20 @@ R//: El shader toma los datos de los vértices y píxeles para generar el color 
 
 - ¿Qué resultados obtuviste?
 R//: Al comentar el shader, se ve un rectángulo blanco. Con el shader activo, se muestran los efectos definidos en el código del shader.
+<img width="1024" height="768" alt="Screenshot 27_10_2025 5_17_44 p  m" src="https://github.com/user-attachments/assets/1974beb9-5a4a-4d23-b4da-8767d72d7fbc" />
+
 
 - ¿Estás usando un vertex shader?
 R//: Sip
+<img width="1920" height="1032" alt="01_simpleColorQuadExample (Ejecución) - ofApp cpp - Microsoft Visual Studio 27_10_2025 5_19_34 p  m" src="https://github.com/user-attachments/assets/c40ff5bb-7584-4a2a-8e22-cd9f956bc605" />
 
 - ¿Estás usando un fragment shader?
 R//: Sip
+<img width="1920" height="1032" alt="01_simpleColorQuadExample (Ejecución) - ofApp cpp - Microsoft Visual Studio 27_10_2025 5_19_26 p  m" src="https://github.com/user-attachments/assets/ba6a1fd9-f873-45d0-b877-5794cca7627b" />
 
 - Analiza el código de los shaders. ¿Qué hace cada uno?
 R//: El vertex shader calcula la posición de los vértices, y el fragment shader define el color de cada píxel en pantalla.
+<img width="1024" height="768" alt="Screenshot 27_10_2025 5_38_20 p  m" src="https://github.com/user-attachments/assets/c6a96e9a-306c-430b-a5ba-6a2dd80b8e49" />
 
 # Actividad 3 #
 
