@@ -1,5 +1,5 @@
 
-Actividad 1
+# Actividad 1
 - ¿Qué es la entrada-salida mapeada a memoria?
 R//:La entrada-salida mapeada a memoria es una técnica en la que los dispositivos de entrada y salida (como el teclado o la pantalla) se representan como áreas específicas dentro del espacio de direcciones de la memoria del sistema. Esto permite que el procesador interactúe con estos dispositivos utilizando instrucciones estándar de lectura y escritura de memoria, sin necesidad de instrucciones especiales o controladores dedicados.
 
@@ -42,7 +42,8 @@ M=M+1
 @LOOP
 0;JMP
 
-Actividad 2-4
+# Actividad 2-4
+
 R//: @SCREEN 
 @31
 AD=D+A
