@@ -270,19 +270,19 @@ Desventajas: - mayor responsabilidad
 - Optimizar inserciones y eliminaciones frecuentes en tiempo real.
 
 ##Actividad 14
-int main() {
-    LinkedList lista;
-    lista.insertAtEnd(10);
-    lista.insertAtEnd(20);
-    lista.insertAtEnd(30);
-    lista.print(); // Esperado: 10 -> 20 -> 30
+    int main() {
+        LinkedList lista;
+        lista.insertAtEnd(10);
+        lista.insertAtEnd(20);
+        lista.insertAtEnd(30);
+        lista.print(); // Esperado: 10 -> 20 -> 30
 
-    lista.remove(20);
-    lista.print(); // Esperado: 10 -> 30
-
-    lista.clear();
-    lista.print(); // Esperado: lista vacía
-}
+        lista.remove(20);
+        lista.print(); // Esperado: 10 -> 30
+    
+        lista.clear();
+        lista.print(); // Esperado: lista vacía
+    }
 
 Pruebas:
 - Insertar nodos al inicio, medio y final.
