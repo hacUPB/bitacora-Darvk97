@@ -87,7 +87,13 @@ R//: Permite que la imagen o el color cambien según la posición del mouse, agr
 R//: La aplicación captura datos como la posición del mouse y los envía a los shaders con uniforms. Los shaders usan esa información para cambiar los colores o efectos.
 
 - Realiza modificaciones a ofApp.cpp y al vertex shader para conseguir otros comportamientos.
-R//: Puedes hacer que los vértices se muevan con el mouse o que cambien de tamaño según su posición.
+R//: <img width="1920" height="1032" alt="mySketch - ofApp cpp - Microsoft Visual Studio 29_10_2025 3_02_41 p  m" src="https://github.com/user-attachments/assets/59e57804-f057-44c0-b3ed-31563ba616ff" />
+<img width="1920" height="1032" alt="mySketch - ofApp cpp - Microsoft Visual Studio 29_10_2025 3_02_18 p  m" src="https://github.com/user-attachments/assets/d1295e00-a666-4413-91ed-93ef4b715a3b" />
 
 - Realiza modificaciones al fragment shader para conseguir otros comportamientos.
-R//:Puedes hacer que el color cambie con el tiempo, con el movimiento del mouse o según una textura diferente.
+R//: <img width="1920" height="1032" alt="mySketch - ofApp cpp - Microsoft Visual Studio 29_10_2025 3_02_18 p  m" src="https://github.com/user-attachments/assets/537d07de-2c4d-44ef-834f-9789d0df5478" />
+
+asi se ve: 
+<img width="1024" height="768" alt="Screenshot 29_10_2025 3_04_19 p  m" src="https://github.com/user-attachments/assets/b27626a5-f48c-4673-b42d-ed6030a4fce0" />
+
+ni idea de porque no agarra 😭
