@@ -1,7 +1,7 @@
-##Actividad 1: 
+# Actividad 1 #
 esto fue lo que respondio chatgpt: 
 
-##Qué es cada clase: 
+## Qué es cada clase ##
 
 Node: Representa un segmento de la serpiente.
 
@@ -68,7 +68,7 @@ keyPressed(int key): Si pulsas 'c', snake.clear() borra todos los segmentos (la 
 
 
 
-##Flujo de ejecución en openFrameworks:
+## Flujo de ejecución en openFrameworks ##
 
 main.cpp (no lo muestras, pero típico):
 
@@ -94,7 +94,7 @@ Ciclo principal:
 
 
 
-##Comportamiento visual:
+## Comportamiento visual ##
 
 - Tienes una serpiente de 11 círculos rojos.
 
@@ -108,7 +108,7 @@ Ciclo principal:
 
 
 
-##Complejidad y memoria
+## Complejidad y memoria ##
 
 - update() y display() son O(n) por frame (n = número de nodos).
 
@@ -118,7 +118,7 @@ Ciclo principal:
 
 
 
-##Detalles/posibles gotchas
+## Detalles/posibles gotchas ##
 
 1. Doble “background”:
 
@@ -150,7 +150,7 @@ Con este enfoque, el espaciado depende de cuánto se mueve el mouse entre frames
 
 
 
-##Mejoras opcionales (ideas rápidas):
+## Mejoras opcionales (ideas rápidas): ##
 
 Crear todo en setup() para evitar el nodo del constructor:
 
@@ -178,19 +178,19 @@ void ofApp::keyPressed(int key){
 
 - Contenedor STL: Podrías simplificar usando std::deque<ofVec2f> en lugar de una lista manual con new/delete (menos propenso a errores de memoria).
 
-##Actividad 2:
+# Actividad 2 #
 - Pregunta: ¿Qué sucede si insertas un nuevo nodo entre dos nodos ya existentes?
 - Hipótesis: El nuevo nodo debe tomar el puntero `next` del nodo anterior, y el nodo anterior debe apuntar al nuevo nodo
 - Verificación: Usar el depurador para observar si los punteros cambian correctamente. Comprobar si se pierde algún nodo o si hay referencias incorrectas.
 
-##Actividad 3
+# Actividad 3 #
 1. Una lista enlazada es una estructura de datos compuesta por nodos conectados entre sí mediante punteros. Cada nodo contiene un valor y un puntero al siguiente nodo.
 2. Diferencias:
 - En un arreglo, los elementos están almacenados de forma contigua en memoria.
 - En una lista enlazada, los nodos están dispersos en memoria y se conectan mediante punteros.
 - Las listas enlazadas permiten inserciones y eliminaciones eficientes en cualquier posición, mientras que en un arreglo puede requerirse mover varios elementos.
 
-##Actividad 4
+# Actividad 4 #
 1.
 struct Node {
     int data;
@@ -198,16 +198,19 @@ struct Node {
 };
 2. Cada nodo tiene un puntero (`next`) que apunta al siguiente nodo en la lista. Esta conexión entre nodos se hace usando punteros en C++
 
-##Actividad 5
+# Actividad 5 #
+
 1. Node* nuevo = new Node;  // Crea un nodo
 delete nodo;             // Libera la memoria del nodo
 2. Los nodos se crean con el operador `new` y se eliminan con `delete`. Es importante liberar los nodos manualmente para evitar fugas de memoria
 
-##Actividad 6
+# Actividad 6 #
+
 - En una lista enlazada, insertar o eliminar elementos en posiciones intermedias solo requiere cambiar algunos punteros.
 - En un arreglo, estas operaciones pueden implicar mover múltiples elementos, lo que es más costoso en tiempo.
 
-##Actividad 7
+# Actividad 7 #
+
 1. LinkedList::~LinkedList() {
     Node* current = head;
     while (current != nullptr) {
@@ -218,7 +221,7 @@ delete nodo;             // Libera la memoria del nodo
 }
 2. El destructor libera todos los nodos uno por uno para evitar fugas de memoria al destruir la lista.
 
-##Actividad 8
+# Actividad 8
 - Se empieza desde el nodo `head`.
 - Se guarda el puntero al siguiente nodo.
 - Se elimina el nodo actual con `delete`.
@@ -226,21 +229,21 @@ delete nodo;             // Libera la memoria del nodo
 - Se repite el proceso hasta llegar a `nullptr`.
 - Finalmente, `head` se establece en `nullptr`.
 
-##Actividad 9
+# Actividad 9
 1. - Se recorre la lista hasta llegar al último nodo.
 - Se crea un nuevo nodo con `new`.
 - El último nodo apunta al nuevo nodo con su puntero `next`.
 
 2. Impacto en rendimiento: Es una operación O(n) si no se tiene un puntero al último nodo. Puede optimizarse con un puntero `tail`.
 
-##Actividad 10
+# Actividad 10
 En una aplicación como un editor de texto, donde se insertan y eliminan caracteres constantemente, una lista enlazada es más eficiente que un arreglo.
 
 Justificación:
 - Permite insertar y eliminar en cualquier posición sin necesidad de mover elementos.
 - Usa memoria dinámicamente, lo que evita redimensionar estructuras como en los arreglos.
 
-##Actividad 11
+# Actividad 11
 1. Podría usarse en un motor de animación donde cada nodo representa un objeto en movimiento (como una partícula).
 
 2. - Uso eficiente de `new` y `delete`.
@@ -248,7 +251,7 @@ Justificación:
 - Usar punteros inteligentes si es posible (como `std::unique_ptr`).
 - Evitar ciclos de referencias para prevenir fugas de memoria.
 
-##Actividad 12
+# Actividad 12
 1. C++:
 - Gestión manual de memoria con `new` y `delete`.
 - Mayor control, pero mayor riesgo de fugas de memoria si se omite `delete`.
@@ -263,13 +266,13 @@ C#:
 Desventajas: - mayor responsabilidad 
 - complejidad al liberar memoria.
 
-##Actividad 13
+# Actividad 13
 - Liberar nodos correctamente cuando ya no se usan.
 - Usar `clear()` o destructores para evitar fugas de memoria.
 - Monitorear el uso de memoria si los elementos visuales son temporales.
 - Optimizar inserciones y eliminaciones frecuentes en tiempo real.
 
-##Actividad 14
+# Actividad 14
     
     int main() {
         LinkedList lista;
