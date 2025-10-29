@@ -270,6 +270,7 @@ Desventajas: - mayor responsabilidad
 - Optimizar inserciones y eliminaciones frecuentes en tiempo real.
 
 ##Actividad 14
+    
     int main() {
         LinkedList lista;
         lista.insertAtEnd(10);
