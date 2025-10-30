@@ -17,8 +17,8 @@ R//: Se creó una aplicación que al hacer uso de los shaders vertex y fragment 
 - Todo se ve con una cámara 3D (ofEasyCam) para observar la superficie y tiene una "linterna" para fijarse en una parte en especifico
 <img width="1920" height="1009" alt="Screenshot 29_10_2025 9_52_24 p  m" src="https://github.com/user-attachments/assets/3a1a2c8b-83c6-4da4-a4ea-40ce262066a7" />
 
-3. Codigo entero
 
+3. Codigo entero
 ## ofApp.cpp ##
 
     void ofApp::setup() {
