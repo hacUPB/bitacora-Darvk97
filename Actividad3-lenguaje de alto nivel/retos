@@ -1,0 +1,35 @@
+# Informe 
+
+1. Vectores de posiciones (spherePositions)
+
+Se usa un vector<glm::vec3> para guardar las posiciones de todas las esferas.
+
+El vector como tal está en la stack, porque es una variable miembro de la clase ofApp.
+
+Pero los elementos del vectorse almacenan en el heap, porque std::vector siempre reserva memoria dinámica para crecer cuando agregamos datos.
+
+Cada glm::vec3 ocupa 12 bytes, 3 floats de 4 bytes cada uno.
+
+2. Esfera seleccionada (selectedSphere)
+
+Es un objeto glm::vec3 que guarda la posición de la esfera seleccionada.
+
+Como es una variable normal de la clase ofApp, se guarda en la stack.
+
+3. Cámara (ofEasyCam cam)
+
+Es un objeto que vive en la stack, porque también es un miembro de ofApp.
+
+Sin embargo, internamente el ofEasyCam crea estructuras como matrices y buffers, que se guardan en el heap ya que son datos más grandes y dinámicos.
+
+4. Parámetros (xStep, yStep, distDiv, amplitud)
+
+Son variables simples (int y float) que se almacenan en la stack, porque forman parte directa de la clase ofApp.
+
+5. Lo que se ve en el depurador
+
+Si se usa el depurador de Visual Studio para mirar spherePositions durante la ejecución, se puede ver:
+
+El puntero interno (_Myfirst) del vector apunta a memoria del heap.
+
+_Mylast y _Myend muestran el rango de memoria reservada, osea que aunque el vector como objeto está en la stack, los datos reales de las posiciones de las esferas están en el heap.

@@ -1,0 +1,236 @@
+1.
+// i = 1
+@1
+D=A
+@i
+M=D
+
+// sum = 0
+@sum
+M=0
+
+(LOOP)
+@i
+D=M
+@100
+D=D-A
+@END
+D;JGT   // si i > 100 salta a END
+
+@i
+D=M
+@sum
+M=M+D   // sum += i
+
+@i
+M=M+1   // i++
+
+@LOOP
+0;JMP
+
+(END)
+@END
+0;JMP   // bucle infinito al final
+Asignación de direcciones:
+i y sum pueden estar asignados, por ejemplo:
+
+i: dirección 16
+
+sum: dirección 17
+(en Hack, las variables empiezan desde la dirección RAM[16] en adelante)
+
+Respuestas:
+¿Cómo están implementadas las variables i y sum?
+Como ubicaciones de memoria RAM (@i → RAM[16], @sum → RAM[17]).
+
+¿En qué direcciones de memoria están estas variables?
+RAM[16] (i) y RAM[17] (sum).
+
+¿Cómo está implementado el ciclo while?
+Usando etiquetas (LOOP) y saltos condicionales D;JGT, con comparación i - 100.
+
+¿Cómo se implementa la variable i?
+Se guarda en una dirección de memoria (RAM[16]) y se incrementa con M=M+1.
+
+¿En qué parte de la memoria se almacena la variable i?
+En la RAM a partir de la dirección 16.
+
+¿Qué es entonces una variable?
+Una posición de memoria con un nombre simbólico para almacenar datos.
+
+¿Qué es la dirección de una variable?
+El número que representa su ubicación en la RAM (como 16, 17...).
+
+¿Qué es el contenido de una variable?
+El valor almacenado en esa dirección de memoria.
+
+2. 
+int sum = 0;
+for (int i = 1; i <= 100; i++) {
+   sum += i;
+}
+
+3. 
+// i = 1
+@1
+D=A
+@i
+M=D
+
+// sum = 0
+@sum
+M=0
+
+(LOOP)
+@i
+D=M
+@100
+D=D-A
+@END
+D;JGT
+
+@i
+D=M
+@sum
+M=M+D
+
+@i
+M=M+1
+
+@LOOP
+0;JMP
+
+(END)
+@END
+0;JMP
+
+4.
+int a = 10;
+int *p;
+p = &a;
+*p = 20;
+
+5.
+a → RAM[16]
+
+p → RAM[17]
+
+// a = 10
+@10
+D=A
+@a
+M=D
+
+// p = &a → p = 16
+@a
+D=A
+@p
+M=D
+
+// *p = 20 → RAM[p] = 20
+@p
+A=M    // A = M[p]
+@20
+D=A
+M=D    // RAM[p] = 20
+
+6. 
+int a = 10;
+int b = 5;
+int *p;
+p = &a;
+b = *p;
+
+7.
+a: RAM[16]
+
+b: RAM[17]
+
+p: RAM[18]
+
+// a = 10
+@10
+D=A
+@a
+M=D
+
+// b = 5
+@5
+D=A
+@b
+M=D
+
+// p = &a → p = 16
+@a
+D=A
+@p
+M=D
+
+// b = *p → RAM[b] = RAM[RAM[p]]
+@p
+A=M    // A = M[p]
+D=M    // D = M[M[p]]
+@b
+M=D
+
+8.
+int *pvar; → declara un puntero a entero
+
+pvar = var; → guarda el valor de var en pvar (si var es una dirección)
+
+var2 = *pvar; → asigna a var2 el contenido de la dirección a la que apunta pvar
+
+pvar = &var3; → almacena la dirección de var3 en pvar
+
+9. 
+int suma(int a, int b) {
+   int var = a + b;
+   return var;
+}
+
+int main() {
+   int c = suma(6, 9);
+   std::cout << "El valor de c es: " << c << std::endl;
+}
+Traducción en Hack 
+a: RAM[16]
+
+b: RAM[17]
+
+var: RAM[18]
+
+c: RAM[19]
+
+asm
+Copiar
+Editar
+// main:
+// a = 6
+@6
+D=A
+@a
+M=D
+
+// b = 9
+@9
+D=A
+@b
+M=D
+
+// c = suma(a, b)
+// suma():
+@a
+D=M
+@b
+D=D+M
+@c
+M=D
+
+// Simula imprimir c 
+@c
+D=M
+
+// fin del programa
+(END)
+@END
+0;JMP

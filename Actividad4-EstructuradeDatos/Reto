@@ -1,0 +1,15 @@
+Link del video
+https://youtu.be/LBJXtqZSyaY
+
+preguntas del reto:
+1. Exploración creativa:
+El efecto visual que quieras lograr depende de cómo mueves, guardas y usas los objetos en tu programa. Las estructuras de datos ayudan a organizar y controlar esos objetos para que el efecto se vea ordenado, variado y llamativo.
+
+2. Gestión de memoria:
+Al crear objetos de manera dinámica es importante controlar bien cuándo se usan y cuándo ya no se necesitan. Para evitar fugas de memoria, se debe liberar siempre lo que no se está usando y asegurarse de no dejar referencias sueltas.
+
+3. Interacción y dinamismo:
+La interacción del usuario puede afectar varios conjuntos de datos al mismo tiempo. Si se organizan bien las estructuras, se puede lograr que el cambio se refleje en todo el sistema y que el resultado visual sea fluido y coherente.
+
+4. Optimización:
+Se pueden aplicar técnicas como usar solo los objetos necesarios, reciclar memoria ya utilizada y reducir cálculos repetidos. Con esto se mantiene un buen rendimiento sin perder la calidad del efecto visual.
