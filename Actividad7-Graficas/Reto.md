@@ -173,7 +173,9 @@ R//: Se creó una aplicación que al hacer uso de los shaders vertex y fragment 
 
  video explicando todo: https://youtu.be/NtLNDIIqPP4
 
- 4. - Explica y muestra cómo probaste la aplicación en ofApp.cpp.
+# RAE2 #
+
+- Explica y muestra cómo probaste la aplicación en ofApp.cpp.
 R//: Probé la aplicación verificando que los valores enviados a los shaders (posición del mouse y clic) se actualizaran correctamente.
 
 - Explica y muestra cómo probaste el vertex shader.
