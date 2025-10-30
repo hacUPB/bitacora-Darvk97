@@ -174,7 +174,7 @@ R//: Se creó una aplicación que al hacer uso de los shaders vertex y fragment 
  video explicando todo: https://youtu.be/NtLNDIIqPP4
 
  4. - Explica y muestra cómo probaste la aplicación en ofApp.cpp.
-R//: Probé la aplicación verificando que los valores enviados a los shaders (posición del mouse y clic) se actualizaran correctamente. Usé mensajes en consola y cambios visuales en pantalla para confirmar que los uniformes se comunicaban bien con los shaders
+R//: Probé la aplicación verificando que los valores enviados a los shaders (posición del mouse y clic) se actualizaran correctamente.
 
 - Explica y muestra cómo probaste el vertex shader.
 R//: Probé el vertex shader observando si los vértices se movían como una onda al mover el mouse y ajusté la intensidad y frecuencia para comprobar que las deformaciones respondían al clic y que no generaran errores visuales.
